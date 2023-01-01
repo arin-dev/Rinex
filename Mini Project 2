@@ -1,0 +1,27 @@
+#CHESS BOARD - (8x8)
+#Mini Project 2
+
+import numpy as np
+import cv2
+
+img = np.zeros((800,800,3)) #creates a black background
+
+ind = 1
+for i in range(8):
+    ind *= -1
+    for j in range(8):
+        if ind == 1 :
+            img[i*100:(i+1)*100,j*100:(j+1)*100] = 255,255,255 
+            ind *= -1
+#For making 100*100 White Squares on the Black Background
+        else:
+##            img[i*100:(i+1)*100,j*100:(j+1)*100] = 0,0,
+            # Above line of code is not required as the background is already Black
+            ind *= -1
+
+cv2.imshow('CHESS BOARD',img)#Printing the Final Result
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# Project by : Arin Dev (IIT Bhubaneswar, Second Year B.Tech student)
+# Email : arindev30@gmail.com and 21ec01048@iitbbs.ac.in
