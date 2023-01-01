@@ -1,0 +1,29 @@
+#Major Project 2 : Face Detection and Counting Faces
+
+import cv2
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+img = cv2.imread('Faces3.jpg') #Reading the image
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)#Converting the image into grayscale
+
+faces = face_cascade.detectMultiScale(gray,scaleFactor = 1.2,minNeighbors = 9)
+
+face_count =0
+
+for x,y,w,h in faces :
+    face_count+=1
+    d = f'{face_count}'
+    img = cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),5) #For making a rectangle around the face
+    cv2.putText(img,d,(int(x+w/3),int(y+h)),cv2.FONT_HERSHEY_DUPLEX,2,(255,0,0),5) # To put the index of face ddetected
+    
+##    print(faces , face_count , d)
+
+print(f'Number of faces detected in the photo are : {face_count}')
+
+cv2.imshow('Face Detection',img) #To display the final image
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# Project by : Arin Dev (IIT Bhubaneswar, Second Year B.Tech student)
+# Email : arindev30@gmail.com and 21ec01048@iitbbs.ac.in
