@@ -1,0 +1,76 @@
+# Mini-Project 1
+# Take any dataset of your choice and perform Exploratory Data Analysis(EDA)
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv('/content/SalesForCourse_quizz_table.csv')
+# Link to kaggle : https://www.kaggle.com/datasets/thedevastator/analyzing-customer-spending-habits-to-improve-sa
+df
+
+df.info()
+
+df.isnull().sum() #Filtering dataset, Some NaN found
+
+print(f' Total number of Countries in dataset : { df["Country"].nunique()} and number of States : {df.State.nunique()} ') 
+
+df.isna().sum().sum()
+
+df = df.dropna() #Removing NaN datasets
+df
+
+df = df.drop(['index','Date','Year','Month','Column1'],axis =1)
+df
+
+df.groupby(['Customer Gender']).size() #1324 Males and 1250 Females went to the Shop 
+
+sns.countplot(df['Customer Gender'])
+
+df[['Product Category','Customer Gender']].value_counts()
+
+df[['Product Category','Customer Gender']].value_counts().plot(kind = 'bar')
+
+sns.countplot(df['Product Category']) #Most people went to shop to buy Accessories
+
+Profit = df.Revenue.sum() - df.Cost.sum() # Shop made a profit of 158512.0 Rs
+
+#Let's verify the above data
+cost = (df['Quantity']*(df['Unit Price']-df['Unit Cost'])).sum() # We got the same answer
+cost
+
+df.Quantity.sum() # Shop sold a total of 5120 items
+
+Avg_Profit = (df.Revenue - df.Cost).mean() # Shop on an average made a profit of 61.6 Rs per customer 
+Avg_Profit
+
+Avg_Cost = df.Cost.mean() # People spent approxiamtely 642.15 on average
+Avg_Cost
+
+Percentage_of_Profit_earned = (Avg_Profit/Avg_Cost)*100
+Percentage_of_Profit_earned # Roughlt 9-10 percent profit was earned by the shop
+
+df2 = df.iloc[:,5:7]
+df2
+
+df2 = df2.groupby('Sub Category').sum()
+df2
+
+df2.plot.bar()
+plt.xticks(rotation = 90) #Most bought item was in sub-Category Tires and Tubes
+
+df3 = df.iloc[:,4:6]
+df3 = df3.groupby(['Product Category','Sub Category']).count()
+df3 # Given Sub-Categories are grouped according to the Categpry below
+
+# 5:5:20
+#print(np.arange(5,25,5))
+
+plt.figure(figsize = (30,10))
+plt.hist(df["Customer Age"], bins = 20, edgecolor="black") # Most people visiting the shop are of age around 40 years
+plt.yticks(size = 15)
+plt.xticks(np.arange(15, 80, 5),size = 15)
+
+# Project by Arin Dev, IIT Bhubaneswar, Second Year B.Tech
+# Email : arindev30@gmail.com and 21ec01048@iitbbs.ac.in
