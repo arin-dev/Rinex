@@ -1,0 +1,74 @@
+#Major Project 1
+#Choose any dataset of your choice and apply a suitable CLASSIFIER/REGRESSOR.
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Link to dataset : https://www.kaggle.com/datasets/whenamancodes/predict-diabities
+
+#1.Take the Data and create a dataframe
+df = pd.read_csv('/content/diabetes.csv')
+df
+
+#2. All the data are in float or int so no need to make any changes in data types 
+# and filtering Pregnancy colum
+df.info() 
+
+# df = df.drop(columns = 'Pregnancies') since according to graph 
+# people with no pregnancies tend not to have diabetes so decided to include this as well.
+df.groupby(["Pregnancies","Outcome"]).size().plot.bar()
+
+df.shape # we have 14 types of different data on 77 different menu items 
+
+df.isnull().sum() #No NaN found
+
+df.groupby(df['Outcome']).size() # In the data set out of 768 people 500 dont have diabetes and 268 have diabtetes
+
+#3. Data Visualization
+sns.countplot(df['Outcome'])
+
+#4. Divide into Input and Output
+x = df.iloc[:,0:8].values
+x
+
+y = df.iloc[:,-1]
+y
+
+#5. Train and Test Variables
+# Dividing data into train and test variables for model testing
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(x,y,random_state = 0)
+
+print(f'Lengths of x, x_train and x_test are respectively: {len(x)}, {len(x_train)}, {len(x_test)} \nand Lengths of y, y_train and y_test are respectively: {len(y)}, {len(y_train)}, {len(y_test)}')
+
+#6. Normalization/Scaling(DONE ONLY FOR INPUT)
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.fit_transform(x_test)
+
+x_train
+
+#7.Run a Classifier/Regressor/Clusterer(Apply suitable Algorithm)
+# Here I am using Regressor
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+model
+
+#8.Fit the model
+model.fit(x_train,y_train)
+
+#9.Predict the output
+y_pred = model.predict(x_test)
+y_pred #PREDICTED OUTPUT VALUES
+
+y_test
+
+#10.Evaluation : Accuracy score
+from sklearn.metrics import accuracy_score
+accuracy_score(y_pred,y_test)*100
+
+# Project by : Arin Dev (IIT Bhubaneswar, Second Year B.Tech student)
+# Email : arindev30@gmail.com and 21ec01048@iitbbs.ac.in
